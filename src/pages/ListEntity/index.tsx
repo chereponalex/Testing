@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import styled from "styled-components";
 import { Container } from "../../style";
 import { checkAuth } from "../../components/Hoc/checkAuth";
-import { getEntities, getUser } from "../../network/entity/get-entities";
+import { getEntities } from "../../network/entity/get-entities";
 import { Spinner } from "../../components/Spinner/Spinner";
 import { Table } from "../../components/Table/Table";
 import { Link } from "react-router-dom";
@@ -17,106 +17,98 @@ const FilterContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-`
+`;
 
 const FilterItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   margin: 2px;
-`
+`;
 
 const columns = [
   {
-    dataKey: 'id',
-    title: 'ID',
+    dataKey: "id",
+    title: "ID",
   },
   {
-    dataKey: 'last_name',
-    title: 'Фамилия',
+    dataKey: "last_name",
+    title: "Фамилия",
   },
   {
-    dataKey: 'name',
-    title: 'Имя',
+    dataKey: "name",
+    title: "Имя",
   },
   {
-    dataKey: 'middle_name',
-    title: 'Отчество',
+    dataKey: "middle_name",
+    title: "Отчество",
   },
   {
-    dataKey: 'actions',
-    title: 'Действия',
+    dataKey: "actions",
+    title: "Действия",
   },
-]
+];
 
 const renderRules = {
   id: {
-    dataKey: 'id',
-    title: 'ID',
+    dataKey: "id",
+    title: "ID",
     render: (item: any) => {
-      return <td>{item.id}</td>
-    }
+      return <td>{item.id}</td>;
+    },
   },
   last_name: {
-    dataKey: 'last_name',
-    title: 'Фамилия',
+    dataKey: "last_name",
+    title: "Фамилия",
     render: (item: any) => {
-      return <td>{item.last_name}</td>
-    }
+      return <td>{item.last_name}</td>;
+    },
   },
   name: {
-    dataKey: 'name',
-    title: 'name',
+    dataKey: "name",
+    title: "name",
     render: (item: any) => {
-      return <td>{item.name}</td>
-    }
+      return <td>{item.name}</td>;
+    },
   },
   middle_name: {
-    dataKey: 'middle_name',
-    title: 'Отчество',
+    dataKey: "middle_name",
+    title: "Отчество",
     render: (item: any) => {
-      return <td>{item.middle_name}</td>
-    }
+      return <td>{item.middle_name}</td>;
+    },
   },
   links: {
-    dataKey: 'links',
-    title: 'Действия',
+    dataKey: "links",
+    title: "Действия",
     render: (item: any, id: string) => {
-      /* return <td>
-        <ActionContainer>{item.links.map((el: any) => {
-        if (el.method === 'DELETE' || el.method === 'GET' || el.method === 'PATCH') {
-          return <Link to={`/user/${id}?method=${el.method.toLowerCase()}`}>{el.title}</Link>
-        }
-        return null
-      })}</ActionContainer>
-      </td> */
-      return <td>
-        <ActionContainer>
-        <Link to={`/user/${id}?mode=delete`}>Удалить</Link>
-        <Link to={`/user/${id}?mode=view`}>Просмотр</Link>
-        <Link to={`/user/${id}?mode=change`}>Изменить</Link>
-        </ActionContainer>
-      </td>
-    }
-  }   
-}
-
+      return (
+        <td>
+          <ActionContainer>
+            <Link to={`/user/${id}?mode=delete`}>Удалить</Link>
+            <Link to={`/user/${id}?mode=view`}>Просмотр</Link>
+            <Link to={`/user/${id}?mode=change`}>Изменить</Link>
+          </ActionContainer>
+        </td>
+      );
+    },
+  },
+};
 
 const ListEntity = () => {
-
   return (
     <Container>
-      <Table 
+      <Table
         searchComponent={SearchFilters}
         columns={columns}
         renderRules={renderRules}
         getTableData={getEntities}
-        queryParams={{per_page: 5}}
+        queryParams={{ per_page: 5 }}
         config={{
           pagination: true,
-          infinityScroll: false
+          infinityScroll: false,
         }}
-         />
+      />
     </Container>
   );
 };
@@ -135,21 +127,30 @@ const debounce = (fn: Function, ms: number) => {
 
 const SearchFilters = (props: any) => {
   const onFilterChange = (key: string, value: string) => {
-    props.setQueryParams((prev: any) => ({...prev, [key]: value, page: 1}))
-  }
+    props.setQueryParams((prev: any) => ({ ...prev, [key]: value, page: 1 }));
+  };
 
-  const debouncedChanged = debounce(onFilterChange, 400)
+  const debouncedChanged = debounce(onFilterChange, 400);
 
-  return <FilterContainer>{props.entity?.filters?.map((filter: any) =>{
-    if (props.renderRules[filter.name]) {
-      return <FilterItem>
-      {filter.label}
-      <input placeholder="Пусто" onChange={(e) => debouncedChanged(filter.name, e.target.value)} />
-      </FilterItem>
-    }
-    return null;
-  })}</FilterContainer>
-}
+  return (
+    <FilterContainer>
+      {props.entity?.filters?.map((filter: any) => {
+        if (props.renderRules[filter.name]) {
+          return (
+            <FilterItem>
+              {filter.label}
+              <input
+                placeholder="Пусто"
+                onChange={(e) => debouncedChanged(filter.name, e.target.value)}
+              />
+            </FilterItem>
+          );
+        }
+        return null;
+      })}
+    </FilterContainer>
+  );
+};
 export const HomePage = checkAuth({ to: "/login", mustBeAuthed: true })(
   ListEntity
 );

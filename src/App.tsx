@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import "./index.css";
 import { HomePage } from "./pages/ListEntity/index";
-import { UserPage } from "./pages/ViewEntity";
+import { UserPage } from "./pages/UserEntity";
 import { NotFoundPage } from "./pages/NotFoundPage";
 
 import { LoginPage } from "./pages/Login/index";

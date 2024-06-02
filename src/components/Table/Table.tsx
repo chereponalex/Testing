@@ -7,7 +7,7 @@ const PaginationContainer = styled.div`
   flex-direction: row;
 `;
 const tableStyle = {
-  width: "80%",
+  width: "100%",
   background: "#a0a0a0",
   border: "none",
   borderRadius: "5px",
