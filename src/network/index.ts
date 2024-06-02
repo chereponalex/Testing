@@ -1,6 +1,5 @@
 import Axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { sessionToken } from "../utils/cookie";
-// import { logout } from "../../utils/logout";
 
 const axios = Axios.create();
 
@@ -11,13 +10,6 @@ axios.interceptors.request.use((config) => {
     (config.headers["Authorization"] = `Bearer ${token}`);
   return config;
 });
-
-// axios.interceptors.response.use(undefined, (error: AxiosError) => {
-//   if (error.response?.status === 401) {
-//     logout()
-//   }
-//   return Promise.reject(error)
-// })
 
 export const get = <R, Params = Record<string, unknown>>(
   url: string,
