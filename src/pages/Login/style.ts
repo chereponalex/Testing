@@ -5,6 +5,7 @@ export const LoginContainer = styled.div`
   height: 100vh;
   background: black;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
